@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="target-densitydpi=device-dpi,width=750,user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录-全国事业单位统考估分系统</title>
+	<meta name="keywords" content="登录,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+	<meta name="description" content="登录,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+  <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+  <link rel="stylesheet" href="__CSS__/public.css">
+  <link rel="stylesheet" href="__CSS__/index.css">
+  <script src="__JS__/jquery.js"></script>
+  <script src="__JS__/layui/layui.js"></script>
+  <script src="__JS__/index.js"></script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?24678d488d6a081efe41e2f4f33c9927";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?64bed758fb50192a0baff29463be841f";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+</head>
+<body>
+<div class="loginWinBodys">
+<div class="loginWins">
+  <div class="loginWin">
+    <ul class="loginTitle">
+      <li class="LoginA"><a href="javascript:;">登录</a></li>
+      <li><a href="javascript:;">注册</a></li>
+    </ul>
+    <input type="hidden" value="{$paper_id}" id="paper_id">
+    <div class="loginBodys">
+        <div class="formLists loginBody">
+          <div class="form-item">
+            <img src="__IMAGES__/dh.png" alt="电话">
+            <input type="number" id="loginUserIphone" name="mobile_phone" autocomplete="off" placeholder="请输入您的手机号">
+          </div>
+          <div class="form-item-submit">
+            <button id="loginBtn">登录</button>
+          </div>
+
+    </div>
+    <div class="layui-form formLists registerBody" style="display:none">
+        <div class="form-item">
+          <img src="__IMAGES__/xm.png" alt="姓名">
+          <input type="text" id="userName" name="user_name" autocomplete="off" placeholder="请输入您的姓名">
+        </div>
+        <div class="form-item">
+          <img src="__IMAGES__/dh.png" alt="电话">
+          <input type="number" id="registerUserIphone" name="mobile_phone" autocomplete="off" placeholder="请输入您的电话">
+        </div>
+        <div class="form-item">
+          <img src="__IMAGES__/yzm.png" alt="验证码">
+          <input type="text" id="yzm" name="yzm" autocomplete="off" placeholder="请输入您的验证码">
+          <a href="javascript:;" id="getYzm">获取验证码</a>
+        </div>
+        <div class="form-item" id="form_city">
+          <img src="__IMAGES__/ds.png" alt="地市">
+          <select id="city" name="city" lay-filter="city">
+            <option value="">请选择地市</option>
+            {volist name = "city" id="vo"}
+            <option value="{$vo.id}" data-name = "{$vo.city_name}">{$vo.city_name}</option>
+            {/volist}
+          </select>
+        </div>
+        <div class="form-item">
+          <img src="__IMAGES__/gw.png" alt="岗位">
+          <select id="userPost" name="userPost" lay-search="">
+            <option value="">请先选择地市再选岗位</option>
+          </select>
+        </div>
+        <div class="form-item-submit">
+          <button id="registerBtn">确认提交</button>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script id="userPostT" type="text/html">
+		{{#  layui.each(d.list, function(index, item){ }}
+		   <option value="{{item.id}}" data-name="{{item.station_name}}" data-id="{{item.station_number}}">{{item.station_name}}({{item.station_number}})</option>
+		{{#  }); }}
+</script>
+<script>
+  layui.use(['form', 'layer','laytpl'], function() {
+    var form = layui.form,
+		laytpl = layui.laytpl,
+    layer = layui.layer;
+    form.on('select(city)', function(data){
+      //console.log(data.elem); //得到select原始DOM对象
+      //console.log(data.value); //得到被选中的值
+      //console.log(data.othis); //得到美化后的DOM对象
+      var c_id = data.value;
+      $.ajax({
+        //几个参数需要注意一下
+        type: "POST",//方法类型
+        dataType: "json",//预期服务器返回的数据类型
+        url: "/estimate/index/index/getStation" ,//url
+        data: {c_id:c_id},
+        success: function (result) {
+          //console.log(result);//打印服务端返回的数据(调试用)
+          if (result.code == 200) {
+						var data = {list:result.data};
+						var getTpl = userPostT.innerHTML
+						,view = document.getElementById('userPost');
+						laytpl(getTpl).render(data, function(html){
+							view.innerHTML = html;	
+						});
+						form.render('select');
+          }else{
+            layer.msg(result.data);
+            return false;
+          }
+        },
+        error : function() {
+          layer.msg('系统异常');
+          return false;
+        }
+      });
+    });
+  })
+  var urlType = GetQueryString("type"); //得到url中tab参数的值
+  myTab(urlType) //切换tab
+  //匹配地址栏参数值
+  function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return 0; //当没有该参数返回0
+  }
+  $(".loginTitle li").click(function() {
+    var index = $(this).index();
+    myTab(index);
+  })
+
+  function myTab(index) {
+    if (index == 0) {
+      $(".loginTitle li").eq(0).addClass("LoginA");
+      $(".loginTitle li").eq(1).removeClass("registerA");
+      $(".loginBodys .formLists").eq(0).show();
+      $(".loginBodys .formLists").eq(1).hide();
+    } else if (index == 1) {
+      $(".loginTitle li").eq(1).addClass("registerA");
+      $(".loginTitle li").eq(0).removeClass("LoginA");
+      $(".loginBodys .formLists").eq(1).show();
+      $(".loginBodys .formLists").eq(0).hide();
+    }
+  }
+  // 登陆提交
+  $("#loginBtn").click(function() {
+    var paper_id = $("#paper_id").val();
+    var loginUserIphone = $("#loginUserIphone").val();
+    var loginUserIphoneTest = /(13|14|15|16|17|18|19)[0-9]{9}/;
+    if (!loginUserIphoneTest.test(loginUserIphone)) {
+      layer.msg("手机号格式不正确");
+      $("#loginUserIphone").focus();
+      return false;
+    } else {
+      $.ajax({
+        //几个参数需要注意一下
+        type: "POST",//方法类型
+        dataType: "json",//预期服务器返回的数据类型
+        url: "/estimate/index/login/login" ,//url
+        data: {mobile_phone:loginUserIphone},
+        success: function (result) {
+          //console.log(result);//打印服务端返回的数据(调试用)
+          if (result.code == 200) {
+            window.location.href='/estimate/public/paper/'+paper_id+'.html';
+          }else{
+           layer.msg(result.data);
+           setTimeout(function(){window.location.href='/estimate/index/login/index?type=1';},2000);
+          }
+        },
+        error : function() {
+          layer.msg('系统异常');
+          return false;
+        }
+      });
+    }
+  });
+  // 注册提交
+  $("#registerBtn").click(function() {
+    var userName = $("#userName").val();
+    var regUserIphone = $("#registerUserIphone").val();
+    var city = $("#city").val();
+    var yzm = $("#yzm").val();
+    var city = $(" select[ id='city' ] ").val();
+    var city_name = $(" select[ id='city' ] ").find("option:selected").attr("data-name");
+    var userPost = $(" select[ id='userPost' ] ").val();
+    var station_name = $(" select[ id='userPost' ] ").find("option:selected").attr("data-name");
+    var station_num = $(" select[ id='userPost' ] ").find("option:selected").attr("data-id");
+    var regUserIphoneTest = /(13|14|15|16|17|18|19)[0-9]{9}/;
+
+    if (userName == "") {
+      layer.msg("请填写姓名");
+      $("#userName").focus();
+      return false;
+    }
+
+    if (!regUserIphoneTest.test(regUserIphone)) {
+      layer.msg("手机号格式不正确");
+      $("#registerUserIphone").focus();
+        return false;
+    }
+    if (yzm == "") {
+        layer.msg("请填写验证码");
+        $("#yzm").focus();
+        return false;
+    }
+    if (city == "") {
+        layer.msg("请选择地市");
+        $("#city").focus();
+        return false;
+    }
+    if (userPost == "") {
+        layer.msg("请选择岗位");
+        $("#userPost").focus();
+        return false;
+    }
+
+      if (yzm != "") {
+          $.ajax({
+              url:'http://zg99.offcn.com/index/duanxin/yzmsg?actid=91&callback=2',
+              type:'GET',
+              dataType:'jsonp',
+              data: {phone:regUserIphone,yzm:yzm},
+              success: function (data) {
+                  if (data.status == "1") {
+                      $.ajax({
+                          //几个参数需要注意一下
+                          type: "POST",//方法类型
+                          dataType: "json",//预期服务器返回的数据类型
+                          url: "/estimate/index/register/reg" ,//url
+                          data: {user_name:userName,mobile_phone:regUserIphone,yzm:yzm,city_id:city,city_name:city_name,station_id:userPost,station:station_name,station_number:station_num},
+                          success: function (result) {
+                              //console.log(result);//打印服务端返回的数据(调试用)
+                              if (result.code == 200) {
+                                  layer.msg('注册成功,2秒后返回登录页面！', {icon: 1});
+                                  setTimeout(function(){window.location.href='/estimate/index/login/index';},2000);
+                              }else{
+                                  layer.msg(result.data);
+                                  return false;
+                              }
+                          },
+                          error : function() {
+                              layer.msg('注册失败');
+                              return false;
+                          }
+                      });
+                  }else{
+                      layer.msg("验证码错误");
+                      return false;
+                  }
+              }
+          });
+      }
+  })
+  $("#getYzm").click(function() {
+    var regUserIphone = $("#registerUserIphone").val();
+    var regUserIphoneTest = /(13|14|15|16|17|18|19)[0-9]{9}/;
+    if (!regUserIphoneTest.test(regUserIphone)) {
+      layer.msg("手机号格式不正确");
+      $("#registerUserIphone").focus();
+    } else {
+        $.ajax({
+            url:'http://zg99.offcn.com/index/duanxin/sendmsg?actid=91&callback=2',
+            type:'GET',
+            dataType:'jsonp',
+            data: {phone:regUserIphone},
+            success: function (data) {
+                if(data.status=="1"){
+                    layer.msg("正在发送验证码，请稍后...");
+                    var btnText = $('#getYzm').text();
+                    var thisTime = 120;
+                    if (btnText == "获取验证码" || btnText == "重新获取") {
+                        $("#getYzm").attr("disabled", "disabled");
+                        $("#getYzm").css("cursor", "not-allowed");
+                        var myVfs = setInterval(autoTime, 1000);
+                    }
+
+                    function autoTime() {
+                        if (thisTime > 0) {
+                            $("#getYzm").text("重新发送(" + thisTime + ")");
+                            thisTime--;
+                        } else {
+                            $("#getYzm").text("重新获取");
+                            $("#getYzm").css("cursor", "pointer");
+                            $("#getYzm").removeAttr("disabled");
+                            clearInterval(myVfs);
+                        }
+                    }
+                }else{
+                    layer.msg(data.msg);
+                }
+            }
+        });
+
+
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿{include file="common/head"}
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 用户得分列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="pd-20">
+	<div class="text-c">
+		<form action="/estimate/admin/estimate/userScore" method="post" class="form form-horizontal" id="form-article-add">
+			<input type="text" name="mobile_phone" value="{$query['mobile_phone']}" id="" autocomplete="off" placeholder="手机号" style="width:200px" class="input-text">
+			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>搜索</button>
+		</form>
+	</div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover">
+			<thead>
+				<tr class="text-c">
+					<th width="10">用户ID</th>
+					<th width="20">用户名</th>
+					<th width="10">得分</th>
+					<th width="10">手机号</th>
+					<th width="10">正确数</th>
+					<th width="10">错误数</th>
+					<th width="20">答题时间</th>
+					<th width="10">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			{volist name="list" id="vo"}
+				<tr class="text-c">
+					<td class="text-l">{$vo.user_id}</td>
+					<td class="text-l">{$vo.user_name}</td>
+					<td class="text-l">{$vo.user_score}</td>
+					<td class="text-l">{$vo.mobile_phone}</td>
+					<td class="text-l">{$vo.correct_num}</td>
+					<td class="text-l">{$vo.error_num}</td>
+					<td>{$vo.create_at|date="Y-m-d",###}</td>
+					<td><a style="text-decoration:none" class="ml-5" href="javascript:if(confirm('确实要删除吗?'))location='/estimate/admin/estimate/userScoreDel?id={$vo.id}'" title="删除">删除</a></td>
+				</tr>
+			{/volist}
+			</tbody>
+		</table>
+	</div>
+	<div>
+		{$list->render()}
+	</div>
+</div>
+{include file="common/footer"}
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+	]
+});
+
+/*试卷-添加*/
+function paper_add(title,url,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url,
+	});
+	layer.full(index);
+}
+/*试题-编辑*/
+function title_edit(title,url,id,w,h){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+/*资讯-删除*/
+function article_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$(obj).parents("tr").remove();
+		layer.msg('已删除!',1);
+	});
+}
+
+</script>
+</body>
+</html>

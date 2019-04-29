@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>2018上海事业单位考试</title>
+		<meta name="keywords" content="答题,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="description" content="答题,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="/estimate/public/static/index/js/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/estimate/public/static/index/css/system.css"/>
+		<script src="/estimate/public/static/index/js/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var str = window.location.href;
+			var index = str.lastIndexOf("\/");
+			var str = str.substring(index + 1, str.length);
+			var str = str.split("html");
+			var str = str[0];
+			var str = str.replace(/[^0-9]/ig, "");
+			var date = new Date();
+			date.setTime(date.getTime() + 120 * 60 * 1000); //设置date为当前时间+120分
+			document.cookie = "paper=" + str + ";path=/";
+		</script>
+		<script src="/estimate/public/static/index/js/islogin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/estimate/public/static/index/js/layui/layui.js"></script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?24678d488d6a081efe41e2f4f33c9927";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?64bed758fb50192a0baff29463be841f";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="wrapCon wrapCon1">
+			<div class="content content2">
+				<div class="header">
+					<input type="hidden" id="paper_id" name="paper_id" value="1">
+					<h2>2018上海事业单位考试</h2>
+					<!--答题卡-->
+				<div class="answerCard">
+					<dl class="tit clearfix">
+						<dt class="tit1">答题卡</dt>
+						<dt class="tit2">
+							<div class="test_time">
+								<p class="test_time">
+									已用时:<b id="lazy">00:00:00</b>
+								</p>
+							</div>
+						</dt>
+					</dl>
+					<div class="count clearfix">
+						<p>
+							<span>完成</span><i class="sub">0</i><span></span><span>/</span><i class="content_fs">6</i><span>题</span>
+						</p>
+                        <div class="packup">
+                        	展开答题卡
+                        </div>
+					</div>
+					<div class="num">
+						<ul class="numList clearfix" id="numList">
+						</ul>
+					    <a href="javascript:;" class="conf confirmSave">确认交卷</a>
+					    <p class="code">本系统以第一次提交成绩为准，请谨慎提交。</p>
+					</div>
+
+				</div>
+
+				</div>
+
+				<ul class="answerList" id="LAY_preview">
+										<div class="stuff">
+						<p><p>很好的</p></p>
+					</div>
+					<li id="link1" class="dtlist" data-id="1">
+						<div class="title"><b class="tihao">1.</b>
+							<p><p>不错哦</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer1" value="1A" id="answer1_option1">
+								<div class="option"></div><label for="answer1_option1"><em>A</em>
+									<p>1<img src=/estimate/public/uploads/admin/image/20190410/5cadc152486b2.jpg></p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer1" value="1B" id="answer1_option2">
+								<div class="option"></div><label for="answer1_option2"><em>B</em>
+									<p>2</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer1" value="1C" id="answer1_option3">
+								<div class="option"></div><label for="answer1_option3"><em>C</em>
+									<p>3</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer1" value="1D" id="answer1_option4">
+								<div class="option"></div><label for="answer1_option4"><em>D</em>
+									<p>4</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+										<div class="stuff">
+						<p></p>
+					</div>
+					<li id="link2" class="dtlist" data-id="2">
+						<div class="title"><b class="tihao">2.</b>
+							<p><p>哈哈哈是的哈哈电话是多少</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer2" value="2A" id="answer2_option1">
+								<div class="option"></div><label for="answer2_option1"><em>A</em>
+									<p>1</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer2" value="2B" id="answer2_option2">
+								<div class="option"></div><label for="answer2_option2"><em>B</em>
+									<p>2</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer2" value="2C" id="answer2_option3">
+								<div class="option"></div><label for="answer2_option3"><em>C</em>
+									<p>3</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer2" value="2D" id="answer2_option4">
+								<div class="option"></div><label for="answer2_option4"><em>D</em>
+									<p>4</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+										<div class="stuff">
+						<p></p>
+					</div>
+					<li id="link3" class="dtlist" data-id="3">
+						<div class="title"><b class="tihao">3.</b>
+							<p><p>敖德萨多撒多撒多撒所</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer3" value="3A" id="answer3_option1">
+								<div class="option"></div><label for="answer3_option1"><em>A</em>
+									<p>4</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer3" value="3B" id="answer3_option2">
+								<div class="option"></div><label for="answer3_option2"><em>B</em>
+									<p>5</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer3" value="3C" id="answer3_option3">
+								<div class="option"></div><label for="answer3_option3"><em>C</em>
+									<p>6</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer3" value="3D" id="answer3_option4">
+								<div class="option"></div><label for="answer3_option4"><em>D</em>
+									<p>7</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+										<div class="stuff">
+						<p></p>
+					</div>
+					<li id="link4" class="dtlist" data-id="4">
+						<div class="title"><b class="tihao">4.</b>
+							<p><p>q23123</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer4" value="4A" id="answer4_option1">
+								<div class="option"></div><label for="answer4_option1"><em>A</em>
+									<p>2</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer4" value="4B" id="answer4_option2">
+								<div class="option"></div><label for="answer4_option2"><em>B</em>
+									<p>3</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer4" value="4C" id="answer4_option3">
+								<div class="option"></div><label for="answer4_option3"><em>C</em>
+									<p>2</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer4" value="4D" id="answer4_option4">
+								<div class="option"></div><label for="answer4_option4"><em>D</em>
+									<p>3</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+										<div class="stuff">
+						<p></p>
+					</div>
+					<li id="link123" class="dtlist" data-id="123">
+						<div class="title"><b class="tihao">123.</b>
+							<p><p>123213213</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer123" value="123A" id="answer123_option1">
+								<div class="option"></div><label for="answer123_option1"><em>A</em>
+									<p>1</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer123" value="123B" id="answer123_option2">
+								<div class="option"></div><label for="answer123_option2"><em>B</em>
+									<p>2</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer123" value="123C" id="answer123_option3">
+								<div class="option"></div><label for="answer123_option3"><em>C</em>
+									<p>3</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer123" value="123D" id="answer123_option4">
+								<div class="option"></div><label for="answer123_option4"><em>D</em>
+									<p>4</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+										<div class="stuff">
+						<p></p>
+					</div>
+					<li id="link124" class="dtlist" data-id="124">
+						<div class="title"><b class="tihao">124.</b>
+							<p><p>aasas</p></p>
+						</div>
+						<ol class="optionlist">
+														<li><input type="radio" class="radioOrCheck" name="answer124" value="124A" id="answer124_option1">
+								<div class="option"></div><label for="answer124_option1"><em>A</em>
+									<p>asa</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer124" value="124B" id="answer124_option2">
+								<div class="option"></div><label for="answer124_option2"><em>B</em>
+									<p>asa</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer124" value="124C" id="answer124_option3">
+								<div class="option"></div><label for="answer124_option3"><em>C</em>
+									<p>aa</p>
+								</label>
+							</li>
+														<li><input type="radio" class="radioOrCheck" name="answer124" value="124D" id="answer124_option4">
+								<div class="option"></div><label for="answer124_option4"><em>D</em>
+									<p>aas</p>
+								</label>
+							</li>
+							
+						</ol>
+					</li>
+					
+				</ul>
+			    <div class="back confirm">
+			    	<a href="javascript:;" class="confirmSave">确认交卷</a>
+			    </div>
+			    <p class="code">本系统以第一次提交成绩为准，请谨慎提交。</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var paper_id = $('#paper_id').val();
+			var SaveClick = true;
+			//提交试卷方法
+			layui.use('layer', function() {
+				var layer = layui.layer;
+				$(".confirmSave").click(function() {
+					var subNum = $(".sub").text();
+					if (SaveClick) {
+						SaveClick = false;
+						setTimeout(function() { //方式用户提交间隔过短重复请求接口
+							SaveClick = true;
+						}, 2000);
+						layer.confirm('当前试卷共'+6+'题,您已完成'+subNum+'题,是否需要立即交卷？', {
+							btn: ['确认', '取消'] //按钮
+						}, function() {
+							layer.closeAll();
+							var paper = [];
+							$(".dtlist").each(function(i){
+								if ($(this).hasClass("myClick")) {
+									$(this).find('input[class=radioOrCheck]').each(function() {
+										if ($(this).is(':checked')) {
+											paper.push($(this).val());
+										}
+									});
+								}else{
+									paper.push($(this).attr("data-id"));
+								}
+							})
+							$.ajax({
+								//几个参数需要注意一下
+								type: "POST", //方法类型
+								dataType: "json", //预期服务器返回的数据类型
+								url: "/estimate/index/index/savePaper", //url
+								data: {
+									paper: paper,
+									paper_id:paper_id
+								},
+								success: function(result) {
+									//console.log(123456); //打印服务端返回的数据(调试用)
+									if (result.code == 200) {
+										window.location.href = '/estimate/index/index/rank';
+									}else{
+										layer.msg(result.data)
+									}
+								}
+							});
+						}, function() {
+							layer.closeAll();
+						});
+					} else {
+						layer.msg("提交过快,请稍后重试")
+					}
+				});
+			})
+
+
+			function numberList(){
+				$.each([1,2,3,4,123,124], function(key, value) {
+					var numList = document.getElementById('numList');
+					var li = document.createElement('li');
+					li.innerHTML = '<a href="#link'+value+'">'+value+'</a>'
+					$('#numList').append(li);
+				});
+			}
+			numberList();//生成100到题的答题卡
+
+		</script>
+        <script src="/estimate/public/static/index/js/system.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			document.onselectstart=new Function("event.returnValue=false;"); //禁止选择,也就是无法复制 
+			//都能支持
+			document.oncontextmenu = function (e) { return false; } //禁止右键
+			//禁止选择网页中的文字 基本上IE浏览器就不能选中文字复制了
+			document.onselectstart = function () { return false; }
+			//禁止鼠标拖动图片
+			document.ondragstart = function () { return false; }
+			//IE不支持
+			document.oncopy = function () { return false; }
+			document.onkeydown = function (e) {
+				if (typeof (e) != "undefined") {
+					//IE8 e 为undefined 则失效
+					var keyCode = e.which; //键值说明 70->F,65->A,67->C ,86->V
+					if (e.ctrlKey && (keyCode == 70 || keyCode == 65 || keyCode == 67 || keyCode == 86)) {
+						return false;
+					}
+				}
+			}
+		</script>
+    </body>
+</html>

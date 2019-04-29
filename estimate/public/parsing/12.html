@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>上海测试</title>
+		<meta name="keywords" content="解析,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="description" content="解析,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="/estimate/public/static/index/css/system.css"/>
+		<script src="/estimate/public/static/index/js/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapCon">
+			<div class="content">
+				<h2>上海测试</h2>
+				<ul class="top clearfix">
+					<li class="left">试题解析详情</li>
+					<li class="right">
+						<div class="option"></div>
+						<span>只看错题</span>
+					</li>
+				</ul>
+				<ul class="resolveList">
+									</ul>
+			    <!--分页-->
+				<div class="myPage">
+									</div>
+			    <div class="back">
+			    	<a href="/estimate/index/index/rank">返回排名页</a>
+			    </div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$.ajax({
+				//几个参数需要注意一下
+				type: "POST", //方法类型
+				dataType: "json", //预期服务器返回的数据类型
+				url: "/estimate/index/index/getAnswer", //url
+				data: {},
+				success: function(result) {
+					//console.log(result.code); //打印服务端返回的数据(调试用)
+					var data = result.data;
+					if (result.code == 200) {
+						$.each(data, function(key, value) {
+							//console.log(value);
+							$('#your_answer_'+key).html(value);
+							var answer = $('#answer_'+key).attr("data-id");
+							if(answer == value){
+								$('#answer_'+key).removeClass("falseBox");
+								$('#answer_'+key).addClass("trueBox");
+								$('#iserror_'+key).removeClass("false");
+								$('#iserror_'+key).addClass("true");
+							}
+						});
+					}
+				}
+			});
+			var err = GetQueryString('type');
+			$(".wrapCon .content .top .right").click(function(){
+				$(".wrapCon .content .top .right .option").toggleClass("cur");
+				$(".wrapCon .content .resolveList > li.trueBox").toggleClass("showhide");
+
+			});
+			function GetQueryString(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return 0;//当没有该参数返回0
+			}
+			if(err == 1){
+				$(".top .right div").addClass("cur");
+			}
+			function cailiaoN(){
+				var cailiao = $(".cailiao").length;
+				for(var i = 0;i < cailiao; i++){
+					var cailiaoT = $(".cailiao").eq(i).text();
+					var cailiaoT = cailiaoT.replace(/\s*/g,"");
+					if(cailiaoT == ""){
+						$(".cailiao").eq(i).hide();
+					}
+				}
+			}
+			cailiaoN();//材料为空隐藏材料框
+		</script>
+		<script language="javascript">
+			document.onselectstart=new Function("event.returnValue=false;"); //禁止选择,也就是无法复制
+		</script>
+	</body>
+</html>

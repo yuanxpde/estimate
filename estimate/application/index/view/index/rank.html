@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="target-densitydpi=device-dpi,width=750,user-scalable=0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>排名-全国事业单位统考估分系统</title>
+		<meta name="keywords" content="排名,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="description" content="排名,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<link rel="stylesheet" href="__CSS__/public.css">
+		<link rel="stylesheet" href="__CSS__/index.css">
+		<script src="__JS__/jquery.js"></script>
+		<script src="__JS__/index.js"></script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?24678d488d6a081efe41e2f4f33c9927";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?64bed758fb50192a0baff29463be841f";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style="background-color: #f9f9fb;">
+		<div class="rankWin">
+			<div class="Trophy">
+				<img src="__IMAGES__/jiangbei.png" alt="奖杯">
+			</div>
+			<div class="rankName">
+				{$rank.user_name}
+			</div>
+			<ul class="rankInfos">
+				<li>
+					<span>您的得分为：</span>
+					<em>{$rank.user_score}分</em>
+				</li>
+				<li>
+					<span>正确数：</span>
+					<em>{$rank.correct_num}</em>
+				</li>
+				<li>
+					<span>错误数：</span>
+					<em>{$rank.error_num}</em>
+				</li>
+				<li>
+					<span>岗位排名：</span>
+					<em>{$rank.rank}</em>
+				</li>
+				<li>
+					<span>您于后一名分差为：</span>
+					<em>{$next}分</em>
+				</li>
+				<li>
+					<span>您于前一名分差为：</span>
+					<em>{$pre}分</em>
+				</li>
+				<li>
+					<span>全省排名：</span>
+					<em>{$rank.c_rank}</em>
+				</li>
+				<li>
+					<span>参与人数：</span>
+					<em>{$all.count}</em>
+				</li>
+				<li>
+					<span>平均分：</span>
+					<em>{$all.avg_score}</em>
+				</li>
+			</ul>
+			<div class="rankBtns">
+				<button type="button" class="seejiexi"><a href="/estimate/public/parsing/{$paper_id}.html">查看解析</a></button>
+				<button type="button" class="zonghe"><a href="http://www.zgsydw.com/shanghai/20190422/522510_1.html">综合试题解析</a></button>
+				<button type="button" class="shoucang" onclick="AddFavorite(window.location,document.title);">收藏本页</button>
+			</div>
+			<div class="rankTip">
+				排名实时更新，建议收藏本页面，随时登录查看排名变化。
+			</div>
+			<div class="rankInfoTable">
+				<div class="rankInfoTableTitle">
+
+					<span class="rankInfoItem2">地市</span>
+					<span class="rankInfoItem3">岗位</span>
+					<span class="rankInfoItem4">得分</span>
+					<span class="rankInfoItem5">全省排名</span>
+				</div>
+				<div id="scroll-box">
+					<div class="scrollLIsts">
+						{volist name="list" id="vo"}
+						<li>
+
+							<span class="rankInfoItem2">{$vo.city_name}</span>
+							<span class="rankInfoItem3">{$vo.station}</span>
+							<span class="rankInfoItem4">{$vo.user_score}</span>
+							<span class="rankInfoItem5">{$vo.c_rank}</span>
+						</li>
+						{/volist}
+					</div>
+					<div class="scrollLIsts">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			function AddFavorite(sURL, sTitle) {
+				try {
+					window.external.addFavorite(sURL, sTitle);
+				} catch (e) {
+					try {
+						window.sidebar.addPanel(sTitle, sURL, "");
+					} catch (e) {
+						alert("加入收藏失败，请使用Ctrl+D进行添加");
+					}
+				}
+			}
+		</script>
+		<script type="text/javascript">
+			var box = document.getElementById('scroll-box');
+			var parent = $(".scrollLIsts").eq(0);
+			var parent2 = $(".scrollLIsts").eq(1);
+			var parentHTML = parent.html();
+			var parentH = parent.height();
+			parent2.html(parentHTML);
+			var timer = setInterval(autoScrollLine, 50);
+			function autoScrollLine() {
+				if (box.scrollTop >= parentH) {
+					box.scrollTop = 0;
+				} else {
+					box.scrollTop++;
+				}
+
+				if (box.scrollTop % box.offsetHeight == 0) {
+					clearInterval(timer);
+					setTimeout(() => {
+						timer = setInterval(autoScrollLine, 50)
+					}, 0)
+				}
+			}
+		</script>
+	</body>
+</html>

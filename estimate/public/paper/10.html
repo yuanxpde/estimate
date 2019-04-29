@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>11111</title>
+		<meta name="keywords" content="答题,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="description" content="答题,估分系统,全国事业单位统,全国事业单位统考,全国事业单位统考估分系统">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="/estimate/public/static/index/js/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/estimate/public/static/index/css/system.css"/>
+		<script src="/estimate/public/static/index/js/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var str = window.location.href;
+			var index = str.lastIndexOf("\/");
+			var str = str.substring(index + 1, str.length);
+			var str = str.split("html");
+			var str = str[0];
+			var str = str.replace(/[^0-9]/ig, "");
+			var date = new Date();
+			date.setTime(date.getTime() + 120 * 60 * 1000); //设置date为当前时间+120分
+			document.cookie = "paper=" + str + ";path=/";
+		</script>
+		<script src="/estimate/public/static/index/js/islogin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/estimate/public/static/index/js/layui/layui.js"></script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?24678d488d6a081efe41e2f4f33c9927";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?64bed758fb50192a0baff29463be841f";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="wrapCon wrapCon1">
+			<div class="content content2">
+				<div class="header">
+					<input type="hidden" id="paper_id" name="paper_id" value="10">
+					<h2>11111</h2>
+					<!--答题卡-->
+				<div class="answerCard">
+					<dl class="tit clearfix">
+						<dt class="tit1">答题卡</dt>
+						<dt class="tit2">
+							<div class="test_time">
+								<p class="test_time">
+									已用时:<b id="lazy">00:00:00</b>
+								</p>
+							</div>
+						</dt>
+					</dl>
+					<div class="count clearfix">
+						<p>
+							<span>完成</span><i class="sub">0</i><span></span><span>/</span><i class="content_fs">0</i><span>题</span>
+						</p>
+                        <div class="packup">
+                        	展开答题卡
+                        </div>
+					</div>
+					<div class="num">
+						<ul class="numList clearfix" id="numList">
+						</ul>
+					    <a href="javascript:;" class="conf confirmSave">确认交卷</a>
+					    <p class="code">本系统以第一次提交成绩为准，请谨慎提交。</p>
+					</div>
+
+				</div>
+
+				</div>
+
+				<ul class="answerList" id="LAY_preview">
+					
+				</ul>
+			    <div class="back confirm">
+			    	<a href="javascript:;" class="confirmSave">确认交卷</a>
+			    </div>
+			    <p class="code">本系统以第一次提交成绩为准，请谨慎提交。</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var paper_id = $('#paper_id').val();
+			var SaveClick = true;
+			//提交试卷方法
+			layui.use('layer', function() {
+				var layer = layui.layer;
+				$(".confirmSave").click(function() {
+					var subNum = $(".sub").text();
+					if (SaveClick) {
+						SaveClick = false;
+						setTimeout(function() { //方式用户提交间隔过短重复请求接口
+							SaveClick = true;
+						}, 2000);
+						layer.confirm('当前试卷共'+0+'题,您已完成'+subNum+'题,是否需要立即交卷？', {
+							btn: ['确认', '取消'] //按钮
+						}, function() {
+							layer.closeAll();
+							var paper = [];
+							$(".dtlist").each(function(i){
+								if ($(this).hasClass("myClick")) {
+									$(this).find('input[class=radioOrCheck]').each(function() {
+										if ($(this).is(':checked')) {
+											paper.push($(this).val());
+										}
+									});
+								}else{
+									paper.push($(this).attr("data-id"));
+								}
+							})
+							$.ajax({
+								//几个参数需要注意一下
+								type: "POST", //方法类型
+								dataType: "json", //预期服务器返回的数据类型
+								url: "/estimate/index/index/savePaper", //url
+								data: {
+									paper: paper,
+									paper_id:paper_id
+								},
+								success: function(result) {
+									//console.log(123456); //打印服务端返回的数据(调试用)
+									if (result.code == 200) {
+										window.location.href = '/estimate/index/index/rank';
+									}
+								}
+							});
+						}, function() {
+							layer.closeAll();
+						});
+					} else {
+						layer.msg("提交过快,请稍后重试")
+					}
+				});
+			})
+
+
+			function numberList(){
+				$.each([], function(key, value) {
+					var numList = document.getElementById('numList');
+					var li = document.createElement('li');
+					li.innerHTML = '<a href="#link'+value+'">'+value+'</a>'
+					$('#numList').append(li);
+				});
+			}
+			numberList();//生成100到题的答题卡
+
+		</script>
+        <script src="/estimate/public/static/index/js/system.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			document.onselectstart=new Function("event.returnValue=false;"); //禁止选择,也就是无法复制 
+			//都能支持
+			document.oncontextmenu = function (e) { return false; } //禁止右键
+			//禁止选择网页中的文字 基本上IE浏览器就不能选中文字复制了
+			document.onselectstart = function () { return false; }
+			//禁止鼠标拖动图片
+			document.ondragstart = function () { return false; }
+			//IE不支持
+			document.oncopy = function () { return false; }
+			document.onkeydown = function (e) {
+				if (typeof (e) != "undefined") {
+					//IE8 e 为undefined 则失效
+					var keyCode = e.which; //键值说明 70->F,65->A,67->C ,86->V
+					if (e.ctrlKey && (keyCode == 70 || keyCode == 65 || keyCode == 67 || keyCode == 86)) {
+						return false;
+					}
+				}
+			}
+		</script>
+    </body>
+</html>

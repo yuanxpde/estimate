@@ -1,0 +1,343 @@
+{include file="common/head"}
+<style>
+	label{
+		position: relative;
+	}
+	#fileinp{
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
+	}
+	#btn{
+		margin-right: 5px;
+	}
+	#text{
+		color: red;
+	}
+	#btn {
+		padding: 5px 10px;
+		background: #00b0f0;
+		color: #FFF;
+		border: none;
+		border-radius: 5px;
+	}
+</style>
+<body>
+<div class="pd-20">
+	<form action="/estimate/admin/estimate/addTitle" method="post" class="form form-horizontal">
+		<input type="hidden" name="id" value="{$info.id}">
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>关联试卷：</label>
+			<div class="formControls col-2">
+				<span class="select-box">
+				<select name="p_id" size="1" class="select" datatype="*" nullmsg="请选择关联试卷！">
+					<option value="">请选择</option>
+					{volist name="paper" id="vo"}
+					<option value="{$vo.id}" {$info.p_id == $vo.id || $pid == $vo.id ? 'selected' : ''}>{$vo.paper_name}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>题号：</label>
+			<div class="formControls col-1">
+				<input type="text" class="input-text" placeholder="" value="{$info.title_number}" placeholder="" id="title_number" name="title_number" datatype="*" nullmsg="题号不能为空">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>分数：</label>
+			<div class="formControls col-1">
+				<input type="text" class="input-text" value="{$info.score|floatval=###}" placeholder="" id="" name="score" datatype="*" nullmsg="分数不能为空">
+			</div>
+			<div class="col-4"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">关联材料：</label>
+			<div class="formControls col-2">
+				<span class="select-box">
+				<select name="material_id" class="select">
+					<option value="0">请选择</option>
+					{volist name="material" id="vo"}
+					<option value="{$vo.id}" {$info.material_id == $vo.id ? 'selected' : ''}>{$vo.material_name}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>题干：</label>
+			<div class="formControls col-10">
+				<script id="editor" name="stem" type="text/plain" style="width:100%;height:200px;" datatype="*">{$info.stem}</script>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>选项：</label>
+			<div class="formControls col-10">
+				<table class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+					<tr class="text-c">
+						<th width="25">正确答案</th>
+						<th width="60">选项</th>
+						<th>选项内容</th>
+						<th width="30">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{volist name="answers" id="answer" key="k"}
+					<tr class="text-c">
+						<td><input type="radio" value="{$answer.option}" name="answer" {$info.answer == $answer.option ? 'checked' : ''}></td>
+						<td>{$answer.option}</td>
+						<td class="text-l" id="op_{$answer.option}">
+							<input type="text" class="input-text" value="{$option[$k-1]['content']}" placeholder="" id="" name="op_content_{$answer.option}" autocomplete="off">
+							<input type="hidden" name="op_image_{$answer.option}" id="pic_{$answer.option}" value=""/>
+							{if condition="$option[$k-1]['image'] neq ''"}
+								<img src="{$option[$k-1]['image']}">
+							{/if}
+						</td>
+						<td class="td-manage">
+							<label for="fileinp">
+								<input type="button" id="btn" value="上传图片"><span id="text"></span>
+								<input type="file" id="fileinp" name="{$answer.option}" onchange="upload_image(this);">
+							</label>
+							<label>
+							<a onClick="del_image(this)" name="{$answer.option}" href="javascript:;" title="删除">删除</a>
+							</label>
+						</td>
+					</tr>
+					{/volist}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">答案解析：</label>
+			<div class="formControls col-10">
+				<script id="editor1" name="analysis" type="text/plain" style="width:100%;height:200px;">{$info.analysis}</script>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-10 col-offset-2">
+				<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+		<div class="row cl" style="padding-top: 10px;border-top: 2px solid #E8E8E8;">
+			<label class="form-label col-2">已关联试题：</label>
+			<div class="formControls col-10">
+				<table class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+					<tr class="text-c">
+						<th width="20">题号</th>
+						<th width="80">内容</th>
+						<th width="100">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{volist name="titles" id="title"}
+					<tr class="text-c">
+						<td>{$title.title_number}</td>
+						<td>{$title.stem}</td>
+						<td class="td-manage">
+							<a title="编辑" href="javascript:;" onClick="paper_add('编辑试题','{:url('Estimate/titleadd')}?id={$title.id}&pid={$title.p_id}','10001')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+						</td>
+					</tr>
+					{/volist}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+{include file="common/footer"}
+<script type="text/javascript">
+	/*试卷-添加*/
+	function paper_add(title,url,w,h){
+		var index = layer.open({
+			shade:0,
+			type: 2,
+			title: title,
+			content: url
+		});
+		layer.full(index);
+	}
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#form-title-add").Validform({
+		tiptype:2,
+		callback:function(form){
+			form[0].submit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+	$list = $("#fileList"),
+	$btn = $("#btn-star"),
+	state = "pending",
+	uploader;
+
+	var uploader = WebUploader.create({
+		auto: true,
+		swf: 'lib/webuploader/0.1.5/Uploader.swf',
+	
+		// 文件接收服务端。
+		server: 'http://lib.h-ui.net/webuploader/0.1.5/server/fileupload.php',
+	
+		// 选择文件的按钮。可选。
+		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
+		pick: '#filePicker',
+	
+		// 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+		resize: false,
+		// 只允许选择图片文件。
+		accept: {
+			title: 'Images',
+			extensions: 'gif,jpg,jpeg,bmp,png',
+			mimeTypes: 'image/*'
+		}
+	});
+	uploader.on( 'fileQueued', function( file ) {
+		var $li = $(
+			'<div id="' + file.id + '" class="item">' +
+				'<div class="pic-box"><img></div>'+
+				'<div class="info">' + file.name + '</div>' +
+				'<p class="state">等待上传...</p>'+
+			'</div>'
+		),
+		$img = $li.find('img');
+		$list.append( $li );
+	
+		// 创建缩略图
+		// 如果为非图片文件，可以不用调用此方法。
+		// thumbnailWidth x thumbnailHeight 为 100 x 100
+		uploader.makeThumb( file, function( error, src ) {
+			if ( error ) {
+				$img.replaceWith('<span>不能预览</span>');
+				return;
+			}
+	
+			$img.attr( 'src', src );
+		}, thumbnailWidth, thumbnailHeight );
+	});
+	// 文件上传过程中创建进度条实时显示。
+	uploader.on( 'uploadProgress', function( file, percentage ) {
+		var $li = $( '#'+file.id ),
+			$percent = $li.find('.progress-box .sr-only');
+	
+		// 避免重复创建
+		if ( !$percent.length ) {
+			$percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
+		}
+		$li.find(".state").text("上传中");
+		$percent.css( 'width', percentage * 100 + '%' );
+	});
+	
+	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+	uploader.on( 'uploadSuccess', function( file ) {
+		$( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+	});
+	
+	// 文件上传失败，显示上传出错。
+	uploader.on( 'uploadError', function( file ) {
+		$( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
+	});
+	
+	// 完成上传完了，成功或者失败，先删除进度条。
+	uploader.on( 'uploadComplete', function( file ) {
+		$( '#'+file.id ).find('.progress-box').fadeOut();
+	});
+	uploader.on('all', function (type) {
+        if (type === 'startUpload') {
+            state = 'uploading';
+        } else if (type === 'stopUpload') {
+            state = 'paused';
+        } else if (type === 'uploadFinished') {
+            state = 'done';
+        }
+
+        if (state === 'uploading') {
+            $btn.text('暂停上传');
+        } else {
+            $btn.text('开始上传');
+        }
+    });
+
+    $btn.on('click', function () {
+        if (state === 'uploading') {
+            uploader.stop();
+        } else {
+            uploader.upload();
+        }
+    });
+
+	
+	
+	var ue = UE.getEditor('editor');
+
+	var ue1 = UE.getEditor('editor1');
+});
+
+
+
+//上传图片
+function upload_image(obj) {
+	//console.log(obj.name);
+	var formData = new FormData();
+	formData.append("file", $(obj).get(0).files[0]);
+	$.ajax({
+		url:'/estimate/admin/estimate/uploadPhoto',
+		type:'POST',
+		data:formData,
+		cache: false,
+		contentType: false,    //不可缺
+		processData: false,    //不可缺
+		success:function(msg){
+			//console.log(msg);
+			var src = msg.src,
+				name = 	obj.name;
+			$("#op_"+name).append('<img src='+src+'>');
+			$("#pic_"+name).val(src);
+		}
+	});
+}
+
+//删除图片
+function del_image(obj) {
+	//console.log(obj.name);
+	var name = 	obj.name;
+	var imgsrc = $("#pic_"+name).val();
+	var data = {};
+		data['imgsrc'] = imgsrc;
+	$("#op_"+name+" img").remove();
+	$("#pic_"+name).val('');
+	$("#text").html('');
+	//console.log(imgsrc);
+	/*$.ajax({
+		url:'/estimate/admin/estimate/delPhoto',
+		type:'POST',
+		data:data,
+		success:function(msg){
+			//console.log(msg);
+			$("#op_"+name+" img").remove();
+			$("#pic_"+name).val('');
+			$("#text").html('');
+		}
+	});*/
+}
+
+$("#fileinp").change(function () {
+	$("#text").html($("#fileinp").val());
+})
+</script>
+</body>
+</html>
